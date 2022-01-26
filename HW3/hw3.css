@@ -4,6 +4,7 @@ body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
     letter-spacing: 1px;
+    overflow-x: hidden;
 }
 
 a{
@@ -77,7 +78,7 @@ a{
 
 .bg1 {
     width: 1330px;
-    background-image: url(hw3_assets/image3.png);
+    background-image: url(https://csci571.com/hw/hw3/images/image3.png);
     position: relative;
     height: 760px;
     text-align: center;
@@ -115,7 +116,7 @@ a{
 .services_section {
     flex-flow: column;
     padding: 0 80px 0 80px;
-    background-image: url('hw3_assets/flower.png');
+    background-image: url('https://csci571.com/hw/hw3/images/flower.png');
     height: 582px;
     width: 250px;
 }
@@ -131,7 +132,7 @@ a{
 }
 
 .image_section {
-    background-image: url('hw3_assets/image1.png');
+    background-image: url('https://csci571.com/hw/hw3/images/image1.png');
     height: 582px;
     width: 659px;
 }
@@ -180,7 +181,7 @@ a{
 
 .bg2 {
     width:1330px;
-    background-image: url('hw3_assets/image2.png');
+    background-image: url('https://csci571.com/hw/hw3/images/image2.png');
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -196,7 +197,7 @@ a{
 .gallery_section {
     flex-flow: row;
     justify-content: space-evenly;
-    background-image: url('hw3_assets/flower.png');
+    background-image: url('https://csci571.com/hw/hw3/images/flower.png');
     background-position: center;
     position: absolute;
     left: 800px;
