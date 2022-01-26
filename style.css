@@ -13,7 +13,7 @@ body {
 	font-family:  Arial, Helvetica, sans-serif;
 	font-size: 13px;
 	color: #F1F5F8;
-  background: #26476E url(background.png) repeat-x;
+  background: #26476E url('index_assets/background.png') repeat-x;
 }
 *
 {
@@ -33,7 +33,7 @@ body {
 
 #titlebar
 {
-background-image:url(titlebar.png);
+background-image:url('index_assets/titlebar.png');
 background-repeat:no-repeat;
 height:30px;
 width:614px;
@@ -54,7 +54,7 @@ color:#FFFFFF;
 text-align:left;
 font-size:14px;
 font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-background-image:url(icon.png); /*change the icon here */
+background-image:url('index_assets/icon.png'); /*change the icon here */
 background-repeat:no-repeat;
 overflow:hidden;
 }
@@ -64,7 +64,7 @@ overflow:hidden;
 
 #bar
 {
-background-image:url(menu.png);
+background-image:url('index_assets/menu.png');
 background-repeat:no-repeat;
 height:39px;
 width:610px;
@@ -117,7 +117,7 @@ background:#316AC5;
   padding-left:7px;
   padding-right:28px;
   font-family: "Lucida Console", Lucida Console, "Tahoma", "Trebuchet MS", Arial;
-  background-image:url(notepad_back.png);
+  background-image:url('index_assets/notepad_back.png');
   background-repeat:repeat-y;
   color:#000000;
 }
@@ -126,7 +126,7 @@ background:#316AC5;
 #footer
 {
 padding-top:6px;
-background-image:url(footer.png);
+background-image:url('index_assets/footer.png');
 background-repeat:no-repeat;
 height:39px;
 width:614px;
