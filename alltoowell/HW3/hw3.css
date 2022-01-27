@@ -24,6 +24,7 @@ a{
     background-color: #fff;
     z-index: 1;
     font-size: 16px;
+    font-weight: 500;
     
 }
 
@@ -44,10 +45,16 @@ a{
     padding-right: 45px;
     background: #fff;
     border: 0;
+    
+}
+
+.nav_bar_button:hover {
+  color: #72643d;
+    
 }
 
 .home {
-  color: #AA955C;
+  color: #72643d;
 }
 
 .nav_bar_button:hover {
@@ -83,10 +90,10 @@ a{
     width: 1239px;
     background-image: url(https://csci571.com/hw/hw3/images/image3.png);
     position: relative;
-    height: 760px;
+    height: 800px;
     text-align: center;
     background-attachment: fixed;
-    background-size: 1239px 830px;
+    background-size: 1239px 860px;
     background-repeat: no-repeat;
 }
 
@@ -162,8 +169,9 @@ a{
 }
 
 .arrow{
-    font-size: 40px;
+    font-size: 30px;
     color: #AA955C;
+    font-weight: 100;
     
 }
 
@@ -175,7 +183,6 @@ a{
     text-align: center;
     vertical-align: middle;
     top: 120px;
-    /* left: 50px; */
     position: relative;
     font-family: 'EB Garamond', serif;
 
@@ -189,7 +196,7 @@ a{
 
 .mid_section_2_body {
     max-width: 542px;
-    margin-left: 330px;
+    margin-left: 290px;
     top: 14px;
     position: relative;
 }
@@ -197,7 +204,7 @@ a{
     font-family: 'EB Garamond', serif;
     font-size: 40px;
     position: relative;
-    margin-left: 120px;
+    margin-left: 50px;
 
 }
 .mid_section_2_text {
@@ -211,8 +218,8 @@ a{
     font-family: 'Roboto', sans-serif;
     color: #AA955C;
     font-size: 14px;
-    
-    margin-left: 120px;
+    font-weight: 800;
+    margin-left: 50px;
 }
 
 
@@ -223,7 +230,7 @@ a{
     justify-content: flex-end;
     align-items: center;
     background-position:60px;
-    background-size: 1120px 1079px;
+    background-size: 1120px 980px;
     background-repeat: no-repeat;
     height:700px;
     text-align: center;
@@ -262,6 +269,8 @@ a{
     font-size: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
+    font-weight: 500;
+    outline: none;
 }
 
 .services_discover{
@@ -290,7 +299,9 @@ a{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    color:#fff
+    color:#fff;
+    position: relative;
+    top: 50px;
 }
 
 .footer_text_box {
@@ -298,6 +309,7 @@ a{
     justify-content: space-evenly;
     align-items: flex-start;
     font-size: 14px;
+    font-weight: 600;
 }
 
 .seperator {
@@ -317,6 +329,6 @@ a{
 }
 
 .max_width_2 {
-    max-width: 160px;
+    max-width: 170px;
 }
 
