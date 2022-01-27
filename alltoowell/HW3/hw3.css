@@ -19,7 +19,6 @@ a{
     align-items: center;
     width: 1239px;
     position: fixed;
-    /* top: 0px; */
     height: 80px;
     background-color: #fff;
     z-index: 1;
@@ -86,19 +85,17 @@ a{
 }
 
 .bg1 {
-    /* margin-top: 80px; */
     width: 1239px;
     background-image: url(https://csci571.com/hw/hw3/images/image3.png);
     position: relative;
     height: 800px;
     text-align: center;
     background-attachment: fixed;
-    background-size: 1239px 860px;
+    background-size: 1239px 890px;
     background-repeat: no-repeat;
 }
 
 .bg1_body{
-    /* margin-top: 80px; */
     width: 450px;
     position: relative;
     left: 400px;
@@ -149,6 +146,7 @@ a{
 }
 .mid_section_2{
     display: flex;
+    width: 1239px;
 }
 
 .mid_section_2_arrow{
@@ -188,12 +186,6 @@ a{
 
 }
 
-/* .mid_section_2_body {
-    max-width: 435px;
-    margin-left: 446px;
-} */
-
-
 .mid_section_2_body {
     max-width: 542px;
     margin-left: 290px;
@@ -222,15 +214,19 @@ a{
     margin-left: 50px;
 }
 
+.bg2_section{
+    position: relative;
+    left: 60px;
+  }
 
 .bg2 {
-    width:1239px;
+    /* width:1239px; */
     background-image: url('https://csci571.com/hw/hw3/images/image2.png');
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background-position:60px;
-    background-size: 1120px 980px;
+    /* background-position:60px; */
+    background-size: 1180px 980px;
     background-repeat: no-repeat;
     height:700px;
     text-align: center;
@@ -238,13 +234,14 @@ a{
     background-attachment: fixed;
 }
 
+
 .gallery_section {
     flex-flow: row;
     justify-content: space-evenly;
     background-image: url('https://csci571.com/hw/hw3/images/flower.png');
     background-position: center;
     position: absolute;
-    left: 750px;
+    left: 700px;
     height: 582px;
     width: 350px;
 }
@@ -267,7 +264,7 @@ a{
     background-color: #AA955C;
     padding: 10px 14px;
     font-size: 14px;
-    letter-spacing: 1px;
+    /* letter-spacing: 1px; */
     text-transform: uppercase;
     font-weight: 500;
     outline: none;
@@ -285,11 +282,9 @@ a{
 }
 
 .footer {
-    display: flex;
-    align-items: center ;
     margin-left: 60px;
     width: 1239px;
-    height: 300px;
+    height: 380px;
 }
 
 .footer_section {
@@ -301,7 +296,7 @@ a{
     align-items: center;
     color:#fff;
     position: relative;
-    top: 50px;
+    top: 120px;
 }
 
 .footer_text_box {
