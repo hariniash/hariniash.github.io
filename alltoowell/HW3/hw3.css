@@ -1,9 +1,9 @@
 body {
     background-color: #fff;
     font-size: 12px;
-    margin: 0px;
     font-family: 'Roboto', sans-serif;
     letter-spacing: 1px;
+    margin: 0px;
     overflow-x: hidden;
 }
 
@@ -24,6 +24,8 @@ a{
     z-index: 1;
     font-size: 16px;
     font-weight: 500;
+    top: 0;
+    left: 0;
     
 }
 
@@ -44,11 +46,12 @@ a{
     padding-right: 45px;
     background: #fff;
     border: 0;
-    
+    transition-duration: 0.5s;
 }
 
 .nav_bar_button:hover {
   color: #72643d;
+  
     
 }
 
@@ -88,21 +91,23 @@ a{
     width: 1239px;
     background-image: url(https://csci571.com/hw/hw3/images/image3.png);
     position: relative;
-    height: 800px;
+    height: 700px;
     text-align: center;
     background-attachment: fixed;
     background-size: 1239px 890px;
     background-repeat: no-repeat;
+    margin-top: 80px;
+    
 }
 
 .bg1_body{
     width: 450px;
     position: relative;
     left: 400px;
-    top: 240px;
+    top: 160px;
 }
 .bg1_text {
-        color: #fff;
+    color: #fff;
     vertical-align: middle;
     font-family: 'EB Garamond', serif;
     font-size: 55px;
@@ -261,7 +266,7 @@ a{
 .buttons {
     border: 1px solid #fff;
     color: #fff;
-    background-color: #AA955C;
+    background-color: #AB955C;
     padding: 10px 14px;
     font-size: 14px;
     /* letter-spacing: 1px; */
