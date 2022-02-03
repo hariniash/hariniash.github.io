@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="search.css">
+  <!-- <script src="https://kit.fontawesome.com/43dcc20e7a.js" crossorigin="anonymous"></script> -->
+  <title>search</title>
+</head>
+<body>
+    <div class='container'>
+        <div class='heading'>
+            Stock Search
+        </div>
+    
+        
+    <div class="search-box">
+        <button type='submit' class='search-bar-buttons search-button'> </button>
+        
+        <input type="text" class="search-input" placeholder="Enter Stock Ticker Symbol">
+        <button type='reset' class='search-bar-buttons reset-button'> </button>
+        
+    </div>
+     <div class="search-results">
+         <div class="results-tab">
+            <button class='tab-links' onclick="opentab(event, 'company')">Company</button>
+            <button class='tab-links' onclick="opentab(event, 'stock-summary')">Stock Summary</button>
+            <button class='tab-links' onclick="opentab(event, 'charts')">Charts</button>
+            <button class='tab-links' onclick="opentab(event, 'latest-news')">Latest News</button>
+         </div>
+         <div class="results-body">
+            <div id="company" class='tab-content'>
+                <img class='result-image' src='assets/tsla.png'>
+                <table class='company-details'>
+                    <tr>
+                        <th>Company Name</th>
+                        <td>Tesla Inc</td>
+                    </tr>
+                    <tr>
+                        <th>Stock Ticker Symbol</th>
+                        <td>TSLA</td>
+                    </tr>
+                    <tr>
+                        <th>Company Name</th>
+                        <td>Tesla Inc</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="stock-summary" class='tab-content'>
+                    stock summary
+            </div>
+            <div id="charts" class='tab-content'>
+                charts
+            </div>
+            <div id="latest-news" class='tab-content'>
+                latest news
+            </div>
+         </div>
+     </div>
+</div>
+<script>
+    function opentab(evt, tab){
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName('tab-content');
+        for(i=0;i<tabcontent.length;i++){
+            tabcontent[i].style.display = 'none';
+        }
+
+        tablinks =  document.getElementsByClassName('tab-links');
+        for(i=0;i<tablinks.length;i++){
+            tablinks[i].className = tablinks[i].className.replace(' active', '');
+        }
+        document.getElementById(tab).style.display = 'block'; 
+        evt.currentTarget.className += ' active'
+    }
+</script>
+</body>
+</html>
+
