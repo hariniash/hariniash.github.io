@@ -1,19 +1,25 @@
 .lemon {
     border-collapse: collapse;
-
-    margin-left: 25vw;
+    /* border: 1px solid #044e3f; */
+    position: relative;
+    top: 200px;
+    /* left: 200px; */
+    margin-left: 15vw;
     font-size: 0.9em;
     font-family: Verdana, Tahoma, sans-serif;
     min-width: 50vw;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+    
     text-align: center;
 }
 
 .lemon tr {
+    /* */
     background-color: #f3f3f3;
     color: #009879;
     text-align: left;
     border: thin solid #009879;
+    border-radius: 20px;
     text-align: center;
 }
 
