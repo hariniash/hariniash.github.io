@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <script src='api-fetch.js'></script>
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <title>search</title>
+</head>
+<body>
+    <div class='container'>
+        <div class='heading'>
+            Stock Search
+        </div>
+    
+    <form  method="POST" onsubmit="search_ticker();return false;"> 
+        <div class="search-box">
+            <input type='submit' class='search-bar-buttons search-button' value=""> </input>
+            
+            <input type="text" class="search-input" name='ticker' placeholder="Enter Stock Ticker Symbol" required>
+            <button type='reset' class='search-bar-buttons reset-button' onclick="clear_results()"> </button>
+            
+        </div>
+    </form>
+     <div id="search-results">
+         <div class="results-tab">
+            <button class='tab-links' id='company-tab' onclick="opentab(event, 'company')">Company Details</button>
+            <button class='tab-links' id='stock-summary-tab' onclick="opentab(event, 'stock-summary');">Stock Summary</button>
+            <button class='tab-links' id='charts-tab' onclick="opentab(event, 'charts')">Charts</button>
+            <button class='tab-links' id='news-tab' onclick="opentab(event, 'latest-news')">Latest News</button>
+         </div>
+         <div class="results-body">
+            <div id="company" class='tab-content'>
+              <div class='company-image-div'>
+                <img id='company-image' src=''>
+              </div>
+              <div class='company-details'>
+                <table>
+                    <tr>
+                        <th>Company Name</th>
+                        <td id='company-name'></td>
+                    </tr>
+                    <tr>
+                        <th>Stock Ticker Symbol</th>
+                        <td id='stock-ticker'></td>
+                    </tr>
+                    <tr>
+                        <th>Stock Exchange Code</th>
+                        <td id='stock-exchange-code'></td>
+                    </tr>
+                   <tr>
+                        <th>Company IPO Date</th>
+                        <td id='company-ipo-date'></td>
+                    </tr>
+                   <tr>
+                        <th>Category</th>
+                        <td id='company-category'></td>
+                    </tr>
+                </table>
+              </div>
+            </div>
+            <div id="stock-summary" class='tab-content'>
+                <div class='summary-table'>
+                    <table>
+                        <tr>
+                            <th>Stock Ticker Symbol</th>
+                            <td id='stock-ticker-symbol'></td>
+                        </tr>
+                        <tr>
+                            <th>Trading Day</th>
+                            <td id='trading-day'></td>
+                        </tr>
+                        <tr>
+                            <th>Previous Closing Price</th>
+                            <td id='previous-closing-price'></td>
+                        </tr>
+                       <tr>
+                            <th>Opening Price</th>
+                            <td id='opening-price'></td>
+                        </tr>
+                       <tr>
+                            <th>High Price</th>
+                            <td id='high-price'></td>
+                        </tr>
+                        <tr>
+                            <th>Low Price</th>
+                            <td id='low-price'></td>
+                        </tr>
+                        <tr>
+                            <th>Change</th>
+                            <td><span id='change'></span>
+                                <img id='change-symbol' src=''>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Change Percent</th>
+                            <td><span id='change-percent'></span>
+                            <img id='change-symbol-percent' src=''>     
+                            </td>
+                        </tr>
+                    </table>
+                  </div>
+                  <div class="recommendation">
+                    <div class='recommendation-scale-text sell' style='color:#DC4D52'>Strong Sell</div>
+                    <div class='recommendation-scale-wrap'>
+                        <div class='recommendation-scale' id='strongSell' style='background-color:#DB3F40'>4</div>
+                        <div class='recommendation-scale' id='sell' style='background-color:#A7634F'>7</div>
+                        <div class='recommendation-scale' id='hold' style='background-color:#7E9362'>13</div>
+                        <div class='recommendation-scale' id='buy' style='background-color:#69C776'>11</div>
+                        <div class='recommendation-scale' id='strongBuy' style='background-color:#75fb8d'>13</div>
+                    </div>
+                    <div class='recommendation-scale-text buy' style='color:#77CB7A'>Strong Buy</div>
+                  </div>
+                  <div class='recommendation-text'>
+                    Recommendation Trends
+                  </div>
+            </div>
+            <div id="charts" class='tab-content'>
+                <div id="high-charts"></div>
+            </div>
+            <div id="latest-news" class='tab-content'>
+                
+            </div>
+         </div>
+     </div>
+<div id="error">
+    <span id='error-message'>
+        Error: No message has been found, please enter a valid symbol
+    </span>
+</div>
+
+</div>
+
+</body>
+</html>
