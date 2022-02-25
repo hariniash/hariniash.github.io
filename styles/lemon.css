@@ -29,12 +29,37 @@
     text-align: center;
 }
 
-
+/* unvisited link */
+a{
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+a:link {
+    color: #0679a7af;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: rgb(116, 36, 170);
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: rgb(51, 129, 64);
+  }
+  
+  /* selected link */
+  a:active {
+    color: rgb(0, 68, 146);
+    
+  }
 
 .lemon  td.active-assign {
     background-color: #04614e88;
     color: #ffffff;
     text-align: center;
+    font-weight: 400;
 }
 
 table td + td { border-left:thin solid #009879 }

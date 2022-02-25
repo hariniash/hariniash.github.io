@@ -1,6 +1,7 @@
 
 from flask import Flask, jsonify, request, send_from_directory, Response
 
+
 app = Flask(__name__)
 import requests
 from datetime import * 
@@ -42,10 +43,13 @@ def stock_summary():
     url = 'https://finnhub.io/api/v1/stock/recommendation'
     response = requests.get(url, params={'symbol': symbol, 'token': TOKEN})
     recommendation_res = response.json()
-
-    date_list = [rec_obj['period']for rec_obj in recommendation_res]
-    date_list = [datetime.strptime(date,'%Y-%m-%d') for date in date_list] 
-    return {'stock': stock_res, 'recommendation': recommendation_res[date_list.index(max(date_list))]}
+    if recommendation_res == []:
+        recommendation_res = [-1]
+        return {'stock': stock_res, 'recommendation': recommendation_res}
+    else:
+        date_list = [rec_obj['period']for rec_obj in recommendation_res]
+        date_list = [datetime.strptime(date,'%Y-%m-%d') for date in date_list] 
+        return {'stock': stock_res, 'recommendation': recommendation_res[date_list.index(max(date_list))]}
 
 @app.route('/charts')
 def charts():
@@ -65,7 +69,7 @@ def charts():
         stock_price.append((charts_data['t'][i]*1000, charts_data['c'][i]))
         volume.append((charts_data['t'][i]*1000, charts_data['v'][i]))
 
-    return {'stock_price': stock_price, 'volume': volume}
+    return {'stock_price': stock_price, 'volume': volume, 'date': (TODAY+relativedelta(months=-6, days=-1)).strftime('%Y-%m-%d')}
 
 
 @app.route('/latest_news')

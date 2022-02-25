@@ -28,16 +28,18 @@
         </div>
     </form>
      <div id="search-results">
+         
          <div class="results-tab">
             <button class='tab-links' id='company-tab' onclick="opentab(event, 'company')">Company Details</button>
             <button class='tab-links' id='stock-summary-tab' onclick="opentab(event, 'stock-summary');">Stock Summary</button>
             <button class='tab-links' id='charts-tab' onclick="opentab(event, 'charts')">Charts</button>
             <button class='tab-links' id='news-tab' onclick="opentab(event, 'latest-news')">Latest News</button>
          </div>
-         <div class="results-body">
+         <div class="results-body" id='results-body'>
+            <div class='loader'id='loader'></div>
             <div id="company" class='tab-content'>
               <div class='company-image-div'>
-                <img id='company-image' src=''>
+                <img id='company-image' src='' style="max-width: 200px; max-height: 200px;">
               </div>
               <div class='company-details'>
                 <table>
