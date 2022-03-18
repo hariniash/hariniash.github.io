@@ -155,7 +155,14 @@ function search_ticker(){
                     
                 
                 })
-            })
+            }).catch(e => {
+                // console.log('error',e)
+                reset_data()
+                document.getElementById('loader').style.display = 'none'
+                document.getElementById('error').style.display = 'flex'
+                active_tab = 'company-tab'
+                active_tab_body = 'company'
+            });
 
             fetch(url+'/latest_news?symbol='+symbol)
             .then((response)=>{
@@ -179,7 +186,14 @@ function search_ticker(){
                     
                 
                 })
-            })
+            }).catch(e => {
+                // console.log('error',e)
+                reset_data()
+                document.getElementById('loader').style.display = 'none'
+                document.getElementById('error').style.display = 'flex'
+                active_tab = 'company-tab'
+                active_tab_body = 'company'
+            });
 
             fetch(url+'/charts?symbol='+symbol)
             .then((response)=>{
@@ -199,13 +213,18 @@ function search_ticker(){
                         },
 
                         title: {
-                        text: `Stock Price ${company_data.ticker} ${data.date}`,
+                        text: `Stock Price ${company_data.ticker} ${get_today_date()}`,
                         margin:40
                         },
 
                         subtitle: {
                             text: '<a href="https://finnhub.io/" target="_blank"> Source: Finnhub </a>',
                             useHTML:true,
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPlacement: 'on'
+                            }
                         },
 
                         yAxis: [{ //--- Primary yAxis
@@ -304,19 +323,29 @@ function search_ticker(){
                     
                 
                 })
-            })
+            }).catch(e => {
+                // console.log('error',e)
+                reset_data()
+                document.getElementById('loader').style.display = 'none'
+                document.getElementById('error').style.display = 'flex'
+                active_tab = 'company-tab'
+                active_tab_body = 'company'
+            });
 
-  
+            document.getElementById(active_tab).className += ' active'
+            document.getElementById(active_tab_body).style.display = ' flex'; 
     
         })
-        document.getElementById(active_tab).className += ' active'
-        document.getElementById(active_tab_body).style.display = ' flex'; 
+        
     
     }).catch(e => {
         // console.log('error',e)
         reset_data()
         document.getElementById('loader').style.display = 'none'
         document.getElementById('error').style.display = 'flex'
+        active_tab = 'company-tab'
+        active_tab_body = 'company'
+
     });
 
     

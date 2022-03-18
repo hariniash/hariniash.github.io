@@ -40,6 +40,8 @@ def stock_summary():
     url = 'https://finnhub.io/api/v1/quote'
     response = requests.get(url, params={'symbol': symbol, 'token': TOKEN})
     stock_res = response.json()
+    if len(stock_res) == 0:
+        return Response('No response for given ticker', status=500)
     url = 'https://finnhub.io/api/v1/stock/recommendation'
     response = requests.get(url, params={'symbol': symbol, 'token': TOKEN})
     recommendation_res = response.json()
@@ -62,6 +64,9 @@ def charts():
     url = 'https://finnhub.io/api/v1/stock/candle'
     response = requests.get(url, params=params)
     charts_data = response.json()
+    # return charts_data
+    if len(charts_data) == 0 or charts_data['s'] == 'no_data':
+        return Response('No response for given ticker', status=500)
 
     stock_price =[]
     volume =[]
@@ -69,7 +74,7 @@ def charts():
         stock_price.append((charts_data['t'][i]*1000, charts_data['c'][i]))
         volume.append((charts_data['t'][i]*1000, charts_data['v'][i]))
 
-    return {'stock_price': stock_price, 'volume': volume, 'date': (TODAY+relativedelta(months=-6, days=-1)).strftime('%Y-%m-%d')}
+    return {'stock_price': stock_price, 'volume': volume}
 
 
 @app.route('/latest_news')
@@ -83,6 +88,8 @@ def latest_news():
     response = requests.get(url, params={'symbol': symbol, 'token': TOKEN, 'from': TODAY+relativedelta(months=-1), 'to': TODAY})
     
     result = response.json()
+    if len(result) == 0:
+        return Response('No response for given ticker', status=500)
     news_segments =[]
     for news in result:
         c = 0

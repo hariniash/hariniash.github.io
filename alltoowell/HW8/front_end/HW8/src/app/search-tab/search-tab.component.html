@@ -1,0 +1,21 @@
+<div id='title'>
+    stock search
+</div>
+<div id='search-form'>
+
+    <!-- <input id="search-input" (keyup)='autocompleteSearch(searchInput.value)' #searchInput type='text' > -->
+    
+
+
+    <form class='search-form'>
+        <input type="text" matInput [matAutocomplete]="auto"  (keyup)='autocompleteSearch(searchInput.value)' (keyup.enter)='searchSubmit(searchInput.value)' #searchInput>
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let result of autocompleteResult">
+                {{result}}
+            </mat-option>
+        </mat-autocomplete>
+        <button (click)='searchSubmit(searchInput.value)'>Submit</button>
+        <button (click)='searchClear()'>Clear</button>
+    </form>
+
+</div>
