@@ -4,19 +4,25 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import {MatAutocompleteModule} from '@angular/material/autocomplete'
 import {MatSelectModule} from '@angular/material/select'
-import {PortFolioModule} from './port-folio/port-folio.module'
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchTabComponent } from './search-tab/search-tab.component';
+import { WatchlistComponent } from './watchlist/watchlist.component';
+import { CompanydetailsComponent } from './companydetails/companydetails.component';
+import { PortfolioComponent } from './portfolio/portfolio.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
-    SearchTabComponent
+    SearchTabComponent,
+    WatchlistComponent,
+    CompanydetailsComponent,
+    PortfolioComponent
   ],
   imports: [
     BrowserModule,
@@ -25,8 +31,7 @@ import { SearchTabComponent } from './search-tab/search-tab.component';
     MatTabsModule,
     HttpClientModule,
     MatAutocompleteModule,
-    MatSelectModule,
-    PortFolioModule
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

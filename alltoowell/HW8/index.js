@@ -26,10 +26,6 @@ app.get('/company_details', async (request, response) => {
     // console.log(query)
     let result = fetchCompanyDetails(ticker)        //Result = Promise
     let res = await result;
-    
-    // console.log('result')
-    // console.log(res)
-
 
     response.send(res)
     // .then(data=>{

@@ -17,9 +17,8 @@ export class ApiCallsService {
 
   autoComplete(searchTerm : string){
     const url =  `${this.searchUrlPre}?q=${searchTerm}`;
-    return this.http.get(url).pipe(
-      catchError(this.handleError('ApiCallsService', [])) // then handle the error
-    );
+    return this.http.get(url);
+    //.pipe( catchError(this.handleError('ApiCallsService', [])) // then handle the error);
 
   }
 }
