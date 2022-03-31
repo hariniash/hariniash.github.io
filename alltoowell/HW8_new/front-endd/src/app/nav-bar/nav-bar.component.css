@@ -1,0 +1,66 @@
+#nav-bar{
+    background-color: #210eab;
+    color: white;
+    padding: 8px 10px;
+}
+
+
+
+
+.tab-style{
+    color: white;
+    text-decoration: none;
+}
+
+/* :host ::ng-deep .mat-tab-list .mat-tab-labels  {
+    color: #ffffff;
+
+  } */
+
+  :host ::ng-deep .mat-tab-label {
+    color: #ffffff;
+    height: 3rem !important;
+    min-width: 0!important;
+    padding: 15px!important;
+    margin: 5px!important;
+    background: rgba(0,0,0,0);
+}
+
+/* ::ng-deep .mat-tab-link .mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) */
+
+/* :host ::ng-deep .mat-tab-label-active {
+    background: rgba(0,0,0,0);
+    border: 2px solid white;
+    border-radius: 20px;
+
+} */
+
+:host ::ng-deep .mat-tab-link:focus, .mat-tab-link:active{
+  color: #ffffff;
+  background: rgba(0,0,0,0);
+  opacity: 1 !important;
+  border: 2px solid white;
+  border-radius: 20px;
+}
+
+
+:host ::ng-deep .mat-ink-bar {
+
+    display: none !important;
+}
+
+.active-link{
+  background: rgba(0,0,0,0);
+  opacity: 1 !important;
+  border: 2px solid white;
+  border-radius: 20px;
+}
+/* :host ::ng-deep .mat-tab-label {
+    min-width: 5px !important;
+    width: 10px;
+
+  }
+
+.custom-tab{
+    width: 10px;
+} */

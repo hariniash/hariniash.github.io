@@ -1,0 +1,32 @@
+/* #background{
+    position: relative;
+    z-index:1;
+
+}
+
+#background:before{
+    z-index:-1;
+    position:absolute;
+    left:0;
+    top:0;
+    content: url('../assets/background-graph.jpg');
+    opacity:0.3;
+} */
+
+#background{
+margin-top: -1.5%;
+background-image: linear-gradient(rgba(255, 255, 255, 0.808), rgba(255,255,255,0.808)), url("../assets/background-graph.jpg");
+height: 90vh;
+}
+
+#nav-bar{
+    height: 10vh;
+}
+.h-10{
+    height: 5vh;
+}
+
+
+/* #component-wrapper{
+    height: 100vh;
+} */
