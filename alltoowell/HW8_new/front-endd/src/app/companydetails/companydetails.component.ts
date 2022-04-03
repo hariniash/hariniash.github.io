@@ -23,7 +23,8 @@ export class CompanydetailsComponent implements OnInit {
   @Input('searchSubmit') searchSubmit = (t: any) => {};
   getLocal = getLocal;
   @Input('companyDetails') result:any = {}
-  
+  @Input('quoteDetails') quote:any = {}
+
   fasStar = fasStar;
   farStar = farStar;
   faCaretDown = faCaretDown;
@@ -56,6 +57,7 @@ export class CompanydetailsComponent implements OnInit {
     setTimeout(()=>this.selfClosingAlert?.close(), 5000)
 
 
+
     updateLocal('watchlistCompanies', Wlist);
   }
 
@@ -66,13 +68,10 @@ export class CompanydetailsComponent implements OnInit {
   ngOnInit(): void {
     this.marketStatus =
       this.result.quote.marketStatus === 'closed'
-        ? 'Market Closed on ' + this.result.quote.t
+        ? 'Market Closed on ' + this.result.quote.timestamp
         : 'market is Open';
-    this.timestamp =
-      this.result.quote.marketStatus === 'closed'
-        ? this.result.quote.t
-        : getTodayDate();
-
+      console.log('in company details comp')
+      console.log(this.result.charts)
 
     // this._success.subscribe(message => this.alertType = message);
     // this._success.pipe(debounceTime(5000)).subscribe(() => {
@@ -82,7 +81,4 @@ export class CompanydetailsComponent implements OnInit {
     //   }
     // });
   }
-}
-function getTodayDate() {
-  throw new Error('Function not implemented.');
 }

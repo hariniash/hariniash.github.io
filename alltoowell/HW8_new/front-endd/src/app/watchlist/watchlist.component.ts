@@ -1,8 +1,13 @@
+import { ApiCallsService } from './../api-calls.service';
 import { NavBarComponent } from './../nav-bar/nav-bar.component';
 import { getLocal, updateLocal } from 'src/localStorage';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { distinct, first } from 'rxjs/operators';
+import { data } from 'highcharts';
+
 
 
 @Component({
@@ -14,7 +19,9 @@ export class WatchlistComponent implements OnInit {
   watchlistData: any = [];
   faCaretDown = faCaretDown;
   faCaretUp = faCaretUp;
-  watchlistEmpty = true
+  watchlistEmpty = true;
+  faXmark = faXmark;
+  quoteData:any = {}
 
   //services modification
   searchTicker(ticker: string) {
@@ -43,34 +50,46 @@ export class WatchlistComponent implements OnInit {
 
   updateWatchlist(curWatchlist:any) {
     this.watchlistData = [];
+    this.quoteData = {}
 
-    curWatchlist.forEach((ticker: string) => {
 
+
+    console.log(curWatchlist.length)
+    curWatchlist.forEach((ticker: any) => {
       //services modification
-      let companyDetails = getLocal(ticker);
-      let reducedDetails = {
-        name: companyDetails.profile.name,
-        ticker:companyDetails.profile.ticker,
-        quote: companyDetails.quote,
-      };
-      this.watchlistData.push(reducedDetails);
+      this.apiCalls.quoteAPI(ticker)
+      .subscribe((data:any) =>{
+        let temp = {'ticker': ticker,
+      'quote': data}
+
+      this.watchlistData.push(temp)
+      },
+      error => console.log('error in watchlist: ',error.error.message))
 
     });
+
+    // console.log(this.quoteData)
+
+
+
+    console.log('quote api subscription')
+    console.log(this.watchlistData)
   }
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private apiCalls: ApiCallsService) {}
 
   ngOnInit(): void {
     let curWatchlist = [];
     if (getLocal('watchlistCompanies')) {
       curWatchlist = getLocal('watchlistCompanies');
     }
-    
+
     if(curWatchlist.length == 0){
       this.watchlistEmpty = true
     }else{
       this.watchlistEmpty = false
     }
     this.updateWatchlist(curWatchlist)
+
   }
 }

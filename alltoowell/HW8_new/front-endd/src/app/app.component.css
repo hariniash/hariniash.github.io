@@ -14,9 +14,10 @@
 } */
 
 #background{
-margin-top: -1.5%;
+/* margin-top: -1.5%; */
 background-image: linear-gradient(rgba(255, 255, 255, 0.808), rgba(255,255,255,0.808)), url("../assets/background-graph.jpg");
-height: 90vh;
+height: 100vh;
+
 }
 
 #nav-bar{

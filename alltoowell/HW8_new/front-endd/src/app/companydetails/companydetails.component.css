@@ -1,5 +1,10 @@
 #company-img{
     max-width: 80px;
     max-height: 80px;
-    
+    /* margin-left: -5rem; */
+
+}
+
+.w-60 {
+  width: 60%;
 }

@@ -1,4 +1,4 @@
-import {autoComplete, fetchCompanyDetails, autoUpdate} from './api-calls.js'
+import {autoComplete, fetchCompanyDetails,quote, autoUpdate} from './api-calls.js'
 import express from 'express';
 
 // const apiCalls = require('./api-calls.js')
@@ -18,34 +18,46 @@ app.get('/search', async (request, response) =>{
     .then(data=>{
         // console.log(data)
         response.send(data)
+    })
+    .catch(error =>{
+        response.status(500).send({'name':'Error', 'message':error.message})
     });
     
 });
 app.get('/company_details', async (request, response) => {
     response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+
     let ticker = request.query.symbol.toUpperCase()
     console.log(ticker)
     let result = fetchCompanyDetails(ticker)        //Result = Promise
-    let res = await result;
 
-    response.send(res)
-    // .then(data=>{
-    //         response.send(data)
-    //     });
+    try{
+        let res = await result;
+
+        response.send(res)
+    }
+    catch(e){
+        response.status(500).send({'name':'Error', 'message':e.message})
+    }
+    
+ 
 })
 
 app.get('/stock_quote', async (request, response) => {
-    let ticker = request.query.symbol
+    response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+    let ticker = request.query.symbol.toUpperCase()
     // console.log(query)
-    let result = autoUpdate(ticker)
+    let result = quote(ticker)
     let res = {}
-    await Promise.all([result]).then(data => res = data)
-    console.log('result')
-    console.log(res)
-    response.send(res)
-    // .then(data=>{
-    //         response.send(data)
-    //     });
+    await Promise.all([result])
+    .then(data => {
+        res = data
+        response.send(res)
+    })
+    .catch(e => {
+        response.status(500).send({'name':'Error', 'message':e.message})
+    })
+    
 })
 
 

@@ -115,8 +115,10 @@ let fetchCompanyDetails =  function(ticker){
         return Promise.all([summaryPromise, sentimentPromise, chartsPromise, newsPromise, peersPromise]).then(()=>{
             return companyDetails
         })
+        .catch(error => alert(error.message));
     
     })
+    
     
 
 }
@@ -189,10 +191,13 @@ async function quote(ticker){
     
     // quote.c, quote.d, quote.dp, quote.t,quote.h, quote.l, quote.o, quote.pc
    
-    
+   
+
     let url = `${HOST}quote?symbol=${ticker}&token=${API_KEY}`
-    await makeHttpCall(url).then((response)=>{
+    let quotePromise = await makeHttpCall(url).then((response)=>{
+        // console.log(response)
         quote = response.data
+        // console.log(quote)
         let propertyName = ''
         for(propertyName in quote){
             if(typeof quote[propertyName] === 'number'){
@@ -201,8 +206,9 @@ async function quote(ticker){
         }
         let timestamp = quote.t;
         let difference = getMarketStatus(quote.t)
-        console.log('diff in sec')
-        console.log(difference)
+
+        // console.log('diff in sec')
+        // console.log(difference)
         // quote.t = dateConverterStandard(quote.t)
         
         // let difference = getMarketStatus(quote.t)
@@ -219,9 +225,19 @@ async function quote(ticker){
         })
         
 
-})
+    })
 
-return quote
+    url = `${HOST}stock/profile2?symbol=${ticker}&token=${API_KEY}`
+    let companyPromise = await makeHttpCall(url).then((response) =>{
+        quote.name = response.data.name
+        console.log('inside namr')
+        console.log(quote.name)
+    })
+
+    return Promise.all([companyPromise, quotePromise]).then(()=>{
+        return quote      
+    })
+
 }
 
 
@@ -303,7 +319,7 @@ async function companyNews(ticker){
             
         });
         
-        topSlice = news.slice(0,5);
+        topSlice = news.slice(0,20);
       
         
     })
@@ -380,10 +396,10 @@ let companySentiment = async function(ticker){
                 return data.period+"<br>Surprise: "+(data.surprise||0).toFixed(2)
             }),
             actual:response.data.map(data=>{
-                return (data.actual || 0).toFixed(2)
+                return parseFloat((data.actual || 0).toFixed(2))
             }),
             estimate:response.data.map(data=>{
-                return (data.estimate || 0).toFixed(2)
+                return parseFloat((data.estimate || 0).toFixed(2))
             }),
         }
         
@@ -397,6 +413,6 @@ let companySentiment = async function(ticker){
 }
 
 
-export {autoComplete, fetchCompanyDetails, autoUpdate};
+export {autoComplete, fetchCompanyDetails, autoUpdate, quote};
 
 

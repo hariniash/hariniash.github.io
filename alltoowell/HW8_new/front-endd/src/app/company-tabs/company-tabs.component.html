@@ -2,7 +2,7 @@
   <mat-tab-group mat-stretch-tabs mat-align-tabs="fit">
     <!-- [curIdx]='2' -->
     <mat-tab label='Summary'>
-      <app-summary [result]='result'></app-summary>
+      <app-summary [result]='result' [quote]='quote'[searchSubmit]="searchSubmit"></app-summary>
     </mat-tab>
     <mat-tab label='Top news'>
       <app-news [news]='result.news'></app-news>

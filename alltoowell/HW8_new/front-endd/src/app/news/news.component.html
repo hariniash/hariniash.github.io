@@ -44,12 +44,12 @@
             </mat-card-content>
             <mat-card-content  id='twitter' >
                 <div id='sharing-icons'>
-                   <a href="'https://twitter.com/intent/tweet?text='+activeNews.headline+'&url='+activeNews.url'" target='_blank'>
+                   <a [href]="'https://twitter.com/intent/tweet?text='+activeNews.headline+'&url='+activeNews.url" target='_blank'>
                        <fa-icon [icon]='faTwitter' [styles] = "{width: '2vw', height: '2vw'}" >
 
                         </fa-icon>
                     </a>
-                    <a href="http://www.facebook.com/share.php?u='+activeNews.url" target='_blank'>
+                    <a [href]="'http://www.facebook.com/share.php?u='+activeNews.url" target='_blank'>
                         <fa-icon [icon]='faFacebook' [styles] = "{width: '2vw', height: '2vw', color:'#0000f5'}">
 
                         </fa-icon>

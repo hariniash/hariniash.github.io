@@ -20,6 +20,8 @@ HMore(Highcharts)
 })
 export class SummaryComponent implements OnInit {
   @Input('result') result: any;
+  @Input('quote') quote:any;
+
   @Input('searchSubmit') searchSubmit = (t: any) => {};
   highcharts = Highcharts;
   constructor() {}

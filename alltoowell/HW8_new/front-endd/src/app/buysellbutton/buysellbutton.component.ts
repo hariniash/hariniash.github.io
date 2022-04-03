@@ -11,10 +11,12 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 })
 export class BuysellbuttonComponent {
   faXmark = faXmark;
+  @Input("buyStockAlert") buyStockAlert: Function = ()=>{};
+  @Input("sellStockAlert") sellStockAlert: Function = ()=>{};
   @Input('source') source:string='search'
   @Input('ticker') ticker:string=''
   @Input('value') value:number=0
-  @Input("rerenderParent") rerenderParent:Function = ()=>{};
+  @Input("transactionUpdate") transactionUpdate:Function = ()=>{};
 
   moneyInWallet = 0
   currentQuantity:number = 0
@@ -30,7 +32,7 @@ export class BuysellbuttonComponent {
   }
 
   changeInQuantity() {
-    this.tval = this.value * parseFloat(this.quantityValue.value);
+    this.tval = parseFloat((this.value * parseFloat(this.quantityValue.value)).toFixed(2));
     if (this.transactionType === "Sell") {
 
       if(parseFloat(this.quantityValue.value) > this.currentQuantity){
@@ -86,8 +88,8 @@ export class BuysellbuttonComponent {
   transaction() {
 
     if (this.transactionType === "Sell") {
-
-      let stockQty = {} || getLocal("stockQty");
+      console.log(this.ticker)
+      let stockQty =  getLocal("stockQty") || {};
 
       stockQty[this.ticker].tval -= this.tval;
 
@@ -112,12 +114,13 @@ export class BuysellbuttonComponent {
 
       this.tval=0;
       this.updateQuantity();
-      this.rerenderParent();
+      this.transactionUpdate();
+      this.sellStockAlert(this.ticker)
     }
 
     else {
 
-      let stockQty = {} || getLocal("stockQty");
+      let stockQty = getLocal("stockQty") || {};
 
       if (!stockQty[this.ticker]) {
 
@@ -137,11 +140,14 @@ export class BuysellbuttonComponent {
 
       stockQty[this.ticker].quantity=parseFloat(stockQty[this.ticker].quantity.toFixed(2))
       stockQty[this.ticker].tval=parseFloat(stockQty[this.ticker].tval.toFixed(2))
+      console.log('buy quantity on local')
+      console.log(stockQty[this.ticker].tval)
 
 
       updateLocal("stockQty", stockQty)
       curBalance = parseFloat(curBalance.toFixed(2))
       updateLocal("money",curBalance)
+      this.buyStockAlert(this.ticker)
     }
 
   }

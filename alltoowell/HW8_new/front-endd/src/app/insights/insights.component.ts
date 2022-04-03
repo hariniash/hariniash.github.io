@@ -50,6 +50,7 @@ export class InsightsComponent implements OnInit {
           type: 'column'
       },
 
+
       plotOptions: {
           series: {
               stacking: 'normal',
@@ -76,6 +77,9 @@ export class InsightsComponent implements OnInit {
     this.earningsChartOptions = {
       title: {
           text: `Historical EPS Surprises`,
+      },
+      tooltip: {
+        shared: true
       },
       xAxis: {
           type: 'linear',

@@ -5,13 +5,11 @@
 </div>
 <div id='search-form' class="d-flex justify-content-center flex-grow-1 flex-column">
 
-    <!-- <input id="search-input" (keyup)='autocompleteSearch(searchInput.value)' #searchInput type='text' > -->
 
-    <form class='search-form d-flex justify-content-center p-1' (submit)="searchSubmit(searchIp.value)" #searchInput>
+    <form class='search-form d-flex justify-content-center p-1' (submit)="searchSubmit(searchIp.value)" #searchInput >
         <div id='search-input' class="input-group">
-        <input class='ml-4' placeholder="Enter stock ticker symbol" type="text" matInput [matAutocomplete]="auto" class='form-control'  [formControl]='searchIp' >
-        <!-- (ngModelChange)='autocompleteSearch()' -->
-        <!-- (keyup.enter)='searchSubmit(searchInput.value)' -->
+        <input class='ml-4' placeholder="Enter stock ticker symbol" type="text" matInput [matAutocomplete]="auto" class='form-control' [formControl]='searchIp' >
+
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)='searchSubmit($event.option.value)'>
             <mat-option *ngIf='isLoadingAutoComplete'>
                 <mat-spinner diameter='30'></mat-spinner>
@@ -22,7 +20,7 @@
             </mat-option>
         </mat-autocomplete>
         <button type='submit' class='input-group-text'>
-            <!--  (click)='searchSubmit(searchInput.value)' -->
+
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
               </svg>
@@ -35,10 +33,13 @@
     </div>
     </form>
 
-    <div class='p-5 align-items-center justify-content-center' *ngIf="loader == 'loading'">
+    <div class='p-5 d-flex align-items-center justify-content-center' *ngIf="loader == 'loading'">
         <mat-spinner diameter='60'></mat-spinner>
     </div>
     <div *ngIf="loader == 'inactive'" class='flex-grow-1'></div>
-    <app-companydetails class='p-1' *ngIf="loader == 'loaded'" [companyDetails]="companyDetails" [searchSubmit]="searchSubmit"></app-companydetails>
-    
+    <div *ngIf="tickerError!=''"  class="container mt-3">
+      <ngb-alert  [dismissible]="false" type="danger" >{{tickerError}}</ngb-alert>
+  </div>
+    <app-companydetails class='p-1' *ngIf="(loader == 'loaded') && (tickerError == '')" [companyDetails]="companyDetails" [quoteDetails] = "quoteDetails" [searchSubmit]="searchSubmit"></app-companydetails>
+
 </div>

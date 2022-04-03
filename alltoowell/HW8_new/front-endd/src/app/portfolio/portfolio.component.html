@@ -1,8 +1,8 @@
-<!-- <div class="container">
+<div class="container">
 
-  <ngb-alert #selfClosingAlert *ngIf="isStockSold" type="danger" (closed)="isStockSold = ''">{{stock}} sold successfully</ngb-alert>
+  <ngb-alert #sellClosingAlert *ngIf="isStockSold" type="danger" (closed)="isStockSold = false">{{stock}} sold successfully</ngb-alert>
 
-  <ngb-alert #selfClosingAlert *ngIf="isStockBought" type="success" (closed)="isStockBought = ''">{{stock}} bought successfully</ngb-alert>
+  <ngb-alert #buyClosingAlert *ngIf="isStockBought" type="success" (closed)="isStockBought = false">{{stock}} bought successfully</ngb-alert>
 
 
   <div class="h1">My Portfolio</div>
@@ -11,55 +11,58 @@
   <div class="portfolio-companies">
 
       <div *ngFor="let companyDetails of portfolioCompanies">
-          <div class="card">
-              <div class="card-header">
+          <div class="card mt-4">
+              <div class="card-header d-flex justify-content-left align-items-center" >
+                <!-- (click)='searchSubmit()' -->
                   <div class="h3">{{companyDetails.ticker}}</div>
-                  <div class="h5">{{companyDetails.name}}</div>
+                  <div class="h5 pl-2" style='color:#7f8797'>{{companyDetails.quote.name}}</div>
               </div>
               <div class="card-body">
                   <div class="row">
                       <div class="col-lg-6 col-sm-12">
                           <div class="row">
                               <div class="col">Quantity:</div>
-                              <div class="col value">{{companyDetails.quantity}}</div>
+                              <div class="col value">{{companyDetails.qty}}</div>
                           </div>
                           <div class="row">
                               <div class="col">Avg. Cost / Share:</div>
-                              <div class="col value">{{companyDetails.averageCostPerShare}}</div>
+
+                              <div class="col value">{{companyDetails.avgCost}}</div>
                           </div>
                           <div class="row">
                               <div class="col">Total Cost:</div>
-                              <div class="col value">{{companyDetails.totalCost}}</div>
+                              <div class="col value">{{companyDetails.tcost}}</div>
                           </div>
 
                       </div>
                       <div class="col-lg-6 col-sm-12 stockValues">
                           <div class="row">
                               <div class="col">Change:</div>
-                              <div class="col value" [ngClass]="{'negative': companyDetails.changePositive =='no', 'positive':companyDetails.changePositive =='yes'}">
-                                  <i *ngIf="companyDetails.changePositive == 'yes'" class="bi bi-caret-up-fill h4"></i>
-                                  <i *ngIf="companyDetails.changePositive == 'no'" class="bi bi-caret-down-fill h4"></i>
+                              <div class="col value" [ngStyle]="{'color': companyDetails.change == 0? '#000000' :(companyDetails.change < 0 ? '#ea3323': '#367b21')}">
+                                <fa-icon *ngIf="companyDetails.change > 0" [icon]='faCaretUp' [styles]="{color: '#367b21'}"></fa-icon>
+                                <fa-icon *ngIf="companyDetails.change < 0" [icon]='faCaretDown' [styles]="{color: '#ea3323'}"></fa-icon>
                                   {{companyDetails.change.toFixed(2)}}
                               </div>
                           </div>
                           <div class="row">
                               <div class="col">Current Price:</div>
-                              <div class="col value" [ngClass]="{'negative': companyDetails.changePositive =='no', 'positive':companyDetails.changePositive =='yes'}">
-                                  {{companyDetails.currentPrice}}</div>
+                              <div class="col value" [ngStyle]="{'color': companyDetails.change == 0? '#000000' :(companyDetails.change < 0 ? '#ea3323': '#367b21')}">
+                                  {{companyDetails.quote.l}}</div>
                           </div>
                           <div class="row">
                               <div class="col">Market Value:</div>
-                              <div class="col value" [ngClass]="{'negative': companyDetails.changePositive =='no', 'positive':companyDetails.changePositive =='yes'}">
-                                  {{companyDetails.marketValue}}</div>
+                              <div class="col value" [ngStyle]="{'color': companyDetails.change == 0? '#000000' :(companyDetails.change < 0 ? '#ea3323': '#367b21')}">
+                                  {{companyDetails.marketVal}}</div>
                           </div>
                       </div>
                   </div>
 
 
               </div>
-              <div class="card-footer">
-                  <app-buysellbutton [buyStockAlert]="buyStockAlert" [sellStockAlert]="sellStockAlert" [ticker]="tickerData.ticker" [value]="tickerData.currentPrice" [source]="'portfolio'"
-                      [rerenderParent]="updateRenderValues"></app-buysellbutton>
+              <div class="card-footer d-flex justify-content-end">
+                  <app-buysellbutton [buyStockAlert]="buyStockAlert" [sellStockAlert]="sellStockAlert"
+                  [ticker]="companyDetails.ticker" [value]="companyDetails.quote.l" [source]="'portfolio'"
+                      [transactionUpdate]="transactionUpdate"></app-buysellbutton>
               </div>
           </div>
       </div>
@@ -67,4 +70,4 @@
       </ngb-alert>
 
   </div>
-</div> -->
+</div>

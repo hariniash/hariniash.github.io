@@ -14,6 +14,7 @@ export class NewsComponent implements OnInit {
   faXmark = faXmark;
 
   activeNews: any = {};
+  twitterLink = ''
 
   constructor(private modalService: NgbModal) {}
 

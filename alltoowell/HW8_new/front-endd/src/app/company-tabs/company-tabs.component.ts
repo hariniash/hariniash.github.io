@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CompanyTabsComponent implements OnInit {
 @Input('result') result: any;
+@Input('quote') quote: any;
 @Input('searchSubmit') searchSubmit=(t:any)=>{}
   constructor() { }
 

@@ -8,7 +8,7 @@ import { PortfolioComponent} from './portfolio/portfolio.component'
 const routes: Routes = [
   {path:'watchlist', component:WatchlistComponent},
   {path:'portfolio', component:PortfolioComponent},
-  {path:'search/home', component:SearchTabComponent},
+
   {path:'search/:ticker', component:SearchTabComponent},
   { path:  'search', redirectTo:  'search/home', pathMatch:  'full' },
   { path:  '', redirectTo:  'search/home', pathMatch:  'full' }];

@@ -1,147 +1,242 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ApiCallsService } from '../api-calls.service'
-import { Router } from '@angular/router';
-import {getLocal, updateLocal } from 'src/localStorage'
+import { ApiCallsService } from '../api-calls.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { getLocal, updateLocal } from 'src/localStorage';
 import { FormControl } from '@angular/forms';
-import { distinctUntilChanged, debounceTime } from "rxjs/operators";
+import {
+  distinctUntilChanged,
+  debounceTime,
+  takeUntil,
+  tap,
+  switchMap,
+} from 'rxjs/operators';
+import { StateService } from '../state.service';
 import { setLines } from '@angular/material/core';
-
+import { convertToObject } from 'typescript';
+import { Subject, timer } from 'rxjs';
 
 @Component({
   selector: 'app-search-tab',
   templateUrl: './search-tab.component.html',
-  styleUrls: ['./search-tab.component.css']
+  styleUrls: ['./search-tab.component.css'],
 })
 export class SearchTabComponent implements OnInit {
-  searchIp = new FormControl('')
-  ticker: any
+  searchIp = new FormControl('');
+  ticker: any;
+  inputFill: any;
 
-  localTicker="home"
-  autocompleteResult:any = []
+  private destroyed$ = new Subject();
+  interval: any;
 
-  loader:string = 'inactive'
-  isLoadingAutoComplete = false
-  companyDetails:any={}
-
-
-  constructor(private apiCalls:ApiCallsService,
-    private router: Router) {
-    this.searchSubmit = this.searchSubmit.bind(this)
-    console.log('hiihii');
-    this.ticker = []
-    this.autocompleteResult = []
+  refreshing = true;
+  param: any;
+  userSubscription: any;
+  quoteDetails:any = {}
 
 
+  loadFlag = false;
 
-  }
-  @ViewChild('searchInput') search: string | undefined
+  tickerError = ''
 
-  searchSubmit(query: any){
-    this.ticker = query;
-    // debugger;
-    this.ticker = typeof(this.ticker)==="string" ? this.ticker : this.ticker.displaySymbol;
-    console.log('ticker name in form: ',this.ticker);
+  localTicker = 'home';
+  autocompleteResult: any = [];
 
-    this.router.navigateByUrl('/search/' + this.ticker);
-    console.log('in search submit')
-    this.search = '';
+  loader: string = 'inactive';
+  isLoadingAutoComplete = false;
+  companyDetails: any = {};
+  inputText:string =''
 
-    this.localTicker = this.ticker
+  constructor(
+    private apiCalls: ApiCallsService,
+    private stateService: StateService,
+    private router: Router,
+    private activated_route: ActivatedRoute
+  ) {
+    this.searchSubmit = this.searchSubmit.bind(this);
 
-    this.loader = 'loading'
+    this.ticker = [];
+    this.autocompleteResult = [];
+    this.stateService._error.subscribe((errorObj:any)=>{
+      console.log(errorObj)
+      if(errorObj.error){
+        this.tickerError = errorObj.message;
+        this.loader='inactive'
+        setTimeout(() => {
+          this.tickerError = '';
 
-    this.apiCalls.getCompanyDetails(this.ticker).subscribe((details: any) => {
-      this.companyDetails = details
-      console.log("details")
-      this.loader = 'loaded'
-      updateLocal('currentTicker', this.ticker)
-      updateLocal(this.ticker, this.companyDetails)
-      this.initLoad()
+
+        }, 5000);
+      }
     })
-    // let cur = getLocal('currentTicker')
-    // console.log(cur)
-    return false;
 
   }
-  searchClear(){
-    updateLocal("currentTicker", "home")
+  @ViewChild('searchInput') search: string | undefined;
+
+  searchSubmit(query: any) {
+    this.ticker = query;
+    this.loader = 'loading'
+    if (this.searchIp.value === ''){
+      this.tickerError = 'Please Enter a valid ticker';
+      console.log('error')
+
+    }
+    this.companyDetails = {};
+
+    this.ticker =
+      typeof this.ticker === 'string' ? this.ticker : this.ticker.displaySymbol;
+    console.log('ticker name in form: ', this.ticker);
+    updateLocal('currentTicker', this.ticker)
+    this.router.navigateByUrl('/search/' + this.ticker);
+    // console.log('in search submit')
     this.search = '';
-    this.companyDetails = {}
-    this.localTicker = "home"
 
-    this.loader = 'inactive'
+    // this.localTicker = this.ticker
+    console.log('param changes');
+    console.log(this.param);
 
-    this.router.navigateByUrl('search/home')
+    // this.loader = 'loading';
+    let currentStack: any = {};
 
+    // this.stateService.addCompany(this.param.ticker);
+    return false;
   }
-  autocompleteSearch(){
-    if(this.searchIp.value===""){
+  searchClear() {
+    // updateLocal("currentTicker", "home")
+    this.search = '';
+    this.companyDetails = {};
+    // this.localTicker = "home"
+    this.stateService.resetData();
+    this.loader = 'inactive';
+    this.tickerError=''
+    updateLocal('currentTicker', '')
+    this.router.navigateByUrl('search/home');
+  }
+
+  autoUpdateCompanyDetails() {
+    setTimeout(
+      () => {
+        if (this.localTicker != 'home') {
+          this.companyDetails = getLocal(this.localTicker);
+        }
+        this.autoUpdateCompanyDetails();
+      },
+
+      15000
+    );
+  }
+
+  autocompleteSearch() {
+    if (this.searchIp.value === '') {
       return;
     }
     // console.log(this.searchIp)
-    this.isLoadingAutoComplete = true
-    this.apiCalls.autoComplete(this.searchIp.value).subscribe((data : any) => {
+    this.isLoadingAutoComplete = true;
 
-      this.autocompleteResult = data
-      console.log(this.autocompleteResult)
-      this.isLoadingAutoComplete = false
+    this.apiCalls.autoComplete(this.searchIp.value).subscribe((data: any) => {
+      if(data.name == 'Error'){
+        this.tickerError = data.message
+        setTimeout(() => {
+          this.tickerError = '';
 
-    })
-  }
-
-  autoUpdateCompanyDetails(){
-    setTimeout(() => {
-      if(this.localTicker != "home"){
-        this.companyDetails=getLocal(this.localTicker);
+        }, 5000);
       }
-      this.autoUpdateCompanyDetails();
+      else{
+      this.autocompleteResult = data;
+      // console.log(this.autocompleteResult)
+      this.isLoadingAutoComplete = false;
     }
-
-    , 15000)
+    });
   }
 
   displayFunc(result: any) {
     // let res = `${result.displaySymbol} | ${result.description}`
     // console.log(res)
     return result.displaySymbol;
-
   }
 
-  initLoad(){
-    let curLocal = getLocal('currentTicker')
-    console.log('current ticker')
-    console.log(curLocal)
 
-    if(curLocal!='home' && curLocal){
-      this.companyDetails = getLocal(curLocal)
-      this.loader = 'loaded'
-      console.log('here')
-      this.localTicker = curLocal
-      // this.searchSubmit(this.localTicker)
-
-    }
-    else{
-      console.log('here first')
-      this.loader = 'inactive';
-      this.localTicker = "home"
-      this.router.navigateByUrl('search/home')
-    }
-
-    this.autoUpdateCompanyDetails()
-
-    this.searchIp.valueChanges
-    .pipe(
-      debounceTime(400),
-      distinctUntilChanged()
-    )
-    .subscribe(res =>{
-      this.autocompleteSearch()
-    })
-  }
+  ngOnChanges(): void {}
   ngOnInit(): void {
-    this.initLoad()
+    console.log(this.searchIp)
+    this.searchIp.valueChanges
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((res) => {
+
+        this.autocompleteSearch();
+      });
+
+    this.userSubscription = this.activated_route.params.subscribe(
+      (params: Params) => {
+        this.param = params;
+
+      if (params['ticker'] != 'home') {
+        if (!params['ticker']) {
+          console.log(' error no ticker case')
+          this.loader='inactive'
+          let e = {
+            error: true,
+            message: 'Please Enter a valid ticker',
+            ticker: '',
+          };
+          this.stateService.errorSubject.next(e);
+        }else if(params['ticker'] != 'home'){
+
+          console.log('inside blank')
+          this.searchIp.setValue(params['ticker']);
+          this.loader = 'loading';
+          this.stateService.addCompany(this.param.ticker);
+          this.stateService.addQuote(this.param.ticker);
+
+        }
+        }
+      }
+    );
+
+
+    this.stateService.companyDetails.subscribe((data) => {
+
+      if (data.profile.ticker) {
+      this.companyDetails = data;
+
+      // console.log(
+      //   'is this ticker: ' + JSON.stringify(this.companyDetails.profile.ticker)
+      // );
+
+        // console.log("Setting loder to loaded")
+        console.log(this.companyDetails.profile.ticker)
+        this.loader = 'loaded';
+        // this.router.navigateByUrl('/search/' + data.profile.ticker)
+      }
+    });
+
+    this.stateService.quoteDetails.subscribe((data:any) =>{
+      console.log('quote data',data[0])
+      if (data[0]){
+        this.quoteDetails = data[0]
+
+        console.log(
+          'inside quote details subcribe ticker: ' + JSON.stringify(this.quoteDetails)
+        );
+
+      }
+    })
+
+    //&& this.companyDetails.quote.marketStatus == 'open'
+
+    if (this.loader=='loaded' ){
+      this.interval = setInterval(() => {
+        this.stateService.refreshQuoteState(this.param.ticker);
+        console.log('refreshing')
+      }, 15000);
+    }
+
+
+
   }
 
-
-
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 }
+

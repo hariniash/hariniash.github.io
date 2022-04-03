@@ -1,19 +1,41 @@
-<div class='d-flex bd-highlight align-items-center' id='nav-bar'>
-    <div class='px-3 w-75 ' id='title'>
-        Stock Search
-    </div>
-    <div class='w-50 d-flex justify-content-end' id='tabs' [@.disabled]="true">
-        <!-- <mat-tab-group class='tabs bg-transparent'>
+<div class='navbar navbar-expand-sm navbar-dark' id='nav-bar'>
+  <div class='px-3 w-75 ' id='title' (click)='etHome()'>
+    Stock Search
+  </div>
+  <!-- <div class='w-50 d-flex justify-content-end' id='tabs' [@.disabled]="true">
+    <mat-tab-group class='tabs bg-transparent'>
             <mat-tab class='tab-style' style="color:'white" label="Search" routerLink='/search'> </mat-tab>
             <mat-tab class='tab-style' label="Watchlist" routerLink='/watchlist'>  </mat-tab>
             <mat-tab class='tab-style' label="Portfolio" routerLink='/portfolio'>  </mat-tab>
           </mat-tab-group> -->
 
-          <nav mat-tab-nav-bar class='d-flex justify-content-end'id='tabs' [@.disabled]="true">
+  <!-- <nav mat-tab-nav-bar class='d-flex justify-content-end'id='tabs' [@.disabled]="true">
             <a class='tab-style' id='links' mat-tab-link routerLinkActive="active-link"
             *ngFor="let link of links"
             [routerLink]="link"> {{link}} </a>
           </nav>
 
+  </div> -->
+
+  <button class="navbar-toggler" type="button"
+  data-toggle="collapse"
+  data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <div class="navbar">
+      <a class="nav-item nav-link" routerLink="/search" (click)='navigate()' routerLinkActive="active">Search</a>
+      <a class="nav-item nav-link" routerLink="/watchlist" routerLinkActive="active">Watchlist</a>
+      <a class="nav-item nav-link" routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
     </div>
+  </div>
+
+
+
+
 </div>
