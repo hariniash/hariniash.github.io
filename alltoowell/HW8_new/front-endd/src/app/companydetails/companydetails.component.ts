@@ -1,3 +1,4 @@
+import { StateService } from './../state.service';
 import { Component, SimpleChange, OnInit, Input, ViewChild } from '@angular/core';
 import { tick } from '@angular/core/testing';
 import { getLocal, updateLocal, remove } from 'src/localStorage';
@@ -7,6 +8,8 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import {debounceTime} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+
+
 
 @Component({
   selector: 'app-companydetails',
@@ -19,16 +22,28 @@ export class CompanydetailsComponent implements OnInit {
   alertType = '';
   marketStatus = '';
   timestamp: any = '';
+  money:any = 0
   @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert | undefined;
   @Input('searchSubmit') searchSubmit = (t: any) => {};
   getLocal = getLocal;
   @Input('companyDetails') result:any = {}
   @Input('quoteDetails') quote:any = {}
 
+  @ViewChild('buyClosingAlert', { static: false }) buySelfClosing:
+  | NgbAlert
+  | undefined;
+  @ViewChild('sellClosingAlert', { static: false }) sellSelfClosing:
+  | NgbAlert
+  | undefined;
+
   fasStar = fasStar;
   farStar = farStar;
   faCaretDown = faCaretDown;
   faCaretUp = faCaretUp;
+
+  isStockSold = false
+  isStockBought = false
+  stock = ''
 
   getTodayDate() {
     let today = new Date();
@@ -42,7 +57,6 @@ export class CompanydetailsComponent implements OnInit {
 
   starToggle() {
 
-
     let Wlist: string[] = getLocal('watchlistCompanies') || [];
     let tickerChanged = this.result.profile.ticker;
     if (Wlist.includes(tickerChanged)) {
@@ -53,22 +67,47 @@ export class CompanydetailsComponent implements OnInit {
 
     } else {
       Wlist.push(tickerChanged);
+
       updateLocal(tickerChanged, this.quote)
       console.log(Wlist);
       this.companyAdded = this.result.profile.ticker;
       this.alertType = 'success';
     }
     setTimeout(()=>this.selfClosingAlert?.close(), 5000);
-
-
-
     updateLocal('watchlistCompanies', Wlist);
 
+  }
+  buyStockAlert(ticker: string) {
+    this.stock = ticker;
+    this.isStockBought = true;
+    console.log('buy alert ')
+    setTimeout(() => {
+      this.stock = '';
+      this.isStockBought = false;
+      this.buySelfClosing?.close();
+      this.stateService.portfolioReset();
+    }, 5000);
+  }
+
+  sellStockAlert(ticker: string) {
+    this.stock = ticker;
+    this.isStockSold = true;
+    console.log('sell alert ')
+    setTimeout(() => {
+      this.stock = '';
+      this.isStockSold = false;
+      this.sellSelfClosing?.close();
+      this.stateService.portfolioReset();
+    }, 5000);
   }
 
 
 
-  constructor() {}
+
+  constructor(private stateService:StateService) {
+    this.buyStockAlert = this.buyStockAlert.bind(this);
+    this.sellStockAlert = this.sellStockAlert.bind(this);
+  }
 
   ngOnInit(): void {
     this.marketStatus =
@@ -78,12 +117,15 @@ export class CompanydetailsComponent implements OnInit {
       console.log('in company details comp')
       console.log(this.result.charts)
 
-    // this._success.subscribe(message => this.alertType = message);
-    // this._success.pipe(debounceTime(5000)).subscribe(() => {
-    //   if (this.selfClosingAlert) {
+      this.stateService.portfolioAlertSubject.subscribe((data) =>{
+        if(data.money > 0){
+          this.money = data.money
+          this.isStockBought = data.isStockBought
+          this.isStockSold = data.isStockSold
+          this.stock = data.stock
 
-    //     this.selfClosingAlert.close();
-    //   }
-    // });
+        }
+      })
+
   }
 }

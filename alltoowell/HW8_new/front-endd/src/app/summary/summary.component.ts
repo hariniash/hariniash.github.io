@@ -7,11 +7,10 @@ import HExporting from 'highcharts/modules/export-data';
 import HIndicators from 'highcharts/indicators/indicators';
 import HVBP from 'highcharts/indicators/volume-by-price';
 
-
-HIndicators(Highcharts)
-HVBP(Highcharts)
-HExporting(Highcharts)
-HMore(Highcharts)
+HIndicators(Highcharts);
+HVBP(Highcharts);
+HExporting(Highcharts);
+HMore(Highcharts);
 
 @Component({
   selector: 'app-summary',
@@ -20,7 +19,7 @@ HMore(Highcharts)
 })
 export class SummaryComponent implements OnInit {
   @Input('result') result: any;
-  @Input('quote') quote:any;
+  @Input('quote') quote: any;
 
   @Input('searchSubmit') searchSubmit = (t: any) => {};
   highcharts = Highcharts;
@@ -31,63 +30,62 @@ export class SummaryComponent implements OnInit {
   chartOptions: Highcharts.Options = {};
 
   ngOnChanges(changes: any) {
-
-
-    if (
-      changes.result.isFirstChange() ||
-      changes.result.previousValue.name != changes.result.currentValue.name
-    ) {
-      console.log('chart title')
-      console.log(this.result.quote.charts[0].title)
-      this.chartOptions= {
-        title: {
-          text: `<div style="color:#737373">${ this.result.quote.charts[0].title}</div>`,
-          useHTML: true,
-        },
-        chart: {
-          marginRight: 20,
-          marginLeft: 20,
-        },
-        xAxis: {
-          type: 'datetime',
-          scrollbar: {
-            enabled: true,
+    if (changes.result) {
+      if (
+        changes.result.isFirstChange() ||
+        changes.result.previousValue.name != changes.result.currentValue.name
+      ) {
+        console.log('chart title');
+        console.log(this.result.quote.charts[0].title);
+        this.chartOptions = {
+          title: {
+            text: `<div style="color:#737373">${this.result.quote.charts[0].title}</div>`,
+            useHTML: true,
           },
-        },
-        yAxis: [
-          {
-            labels: {
-              align: 'right',
-            },
-            title: {
-              text: '',
-            },
-            opposite: true,
+          chart: {
+            marginRight: 20,
+            marginLeft: 20,
           },
-        ],
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            type: 'line',
-            name: 'Stock Price',
-            data: this.result.quote.charts[0].data
-            // .map(([ date, value]) => {return [date, value]; })
-            ,
-            color:
-              this.result.quote.dp > 0
-                ? '#367b21'
-                : this.result.quote.dp < 0
-                ? '#ea3323'
-                : '#000',
-            marker: {
-              enabled: false,
+          xAxis: {
+            type: 'datetime',
+            scrollbar: {
+              enabled: true,
             },
-            threshold: null,
           },
-        ],
-      };
+          yAxis: [
+            {
+              labels: {
+                align: 'right',
+              },
+              title: {
+                text: '',
+              },
+              opposite: true,
+            },
+          ],
+          legend: {
+            enabled: false,
+          },
+          series: [
+            {
+              type: 'line',
+              name: 'Stock Price',
+              data: this.result.quote.charts[0].data,
+              // .map(([ date, value]) => {return [date, value]; })
+              color:
+                this.result.quote.dp > 0
+                  ? '#367b21'
+                  : this.result.quote.dp < 0
+                  ? '#ea3323'
+                  : '#000',
+              marker: {
+                enabled: false,
+              },
+              threshold: null,
+            },
+          ],
+        };
+      }
     }
   }
 }

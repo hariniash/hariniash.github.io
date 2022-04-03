@@ -85,7 +85,7 @@ export class SearchTabComponent implements OnInit {
     this.ticker =
       typeof this.ticker === 'string' ? this.ticker : this.ticker.displaySymbol;
     console.log('ticker name in form: ', this.ticker);
-    updateLocal('currentTicker', this.ticker)
+    // updateLocal('currentTicker', this.ticker)
     this.router.navigateByUrl('/search/' + this.ticker);
     // console.log('in search submit')
     this.search = '';
@@ -197,7 +197,7 @@ export class SearchTabComponent implements OnInit {
 
       if (data.profile.ticker) {
       this.companyDetails = data;
-
+        console.log('inside company subscribe')
       // console.log(
       //   'is this ticker: ' + JSON.stringify(this.companyDetails.profile.ticker)
       // );
@@ -210,20 +210,20 @@ export class SearchTabComponent implements OnInit {
     });
 
     this.stateService.quoteDetails.subscribe((data:any) =>{
-      console.log('quote data',data[0])
+      // console.log('quote data',data[0])
       if (data[0]){
         this.quoteDetails = data[0]
 
-        console.log(
-          'inside quote details subcribe ticker: ' + JSON.stringify(this.quoteDetails)
-        );
+        // console.log(
+        //   'inside quote details subcribe ticker: ' + JSON.stringify(this.quoteDetails)
+        // );
 
       }
     })
 
     //&& this.companyDetails.quote.marketStatus == 'open'
 
-    if (this.loader=='loaded' ){
+    if (this.loader=='loaded' && this.companyDetails.quote.marketStatus == 'open'){
       this.interval = setInterval(() => {
         this.stateService.refreshQuoteState(this.param.ticker);
         console.log('refreshing')

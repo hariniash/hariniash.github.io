@@ -207,11 +207,7 @@ async function quote(ticker){
         let timestamp = quote.t;
         let difference = getMarketStatus(quote.t)
 
-        // console.log('diff in sec')
-        // console.log(difference)
-        // quote.t = dateConverterStandard(quote.t)
-        
-        // let difference = getMarketStatus(quote.t)
+
 
         quote.marketStatus = difference > 300 ? 'closed':'open'
         let todayDate = Math.floor(new Date().getTime() / 1000)

@@ -13,7 +13,7 @@ import { HOST } from './host-name';
 
 export class ApiCallsService {
 
-  private searchUrlPre = HOST + 'search/';
+  private searchUrlPre = HOST + 'autocomplete/';
   private companyUrlPre = HOST + 'company_details';
   private quoteUrl = HOST + 'stock_quote';
 

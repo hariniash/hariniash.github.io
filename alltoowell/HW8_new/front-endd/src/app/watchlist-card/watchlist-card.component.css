@@ -11,3 +11,7 @@
 .outline{
   border: solid 1px #e3e3e3;
 }
+
+#card{
+  cursor: pointer;
+}

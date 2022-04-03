@@ -7,6 +7,11 @@
     {{companyAdded}} removed from Watchlist
   </ngb-alert>
 
+
+  <ngb-alert #sellClosingAlert *ngIf="isStockSold" type="danger" (closed)="isStockSold = false">{{stock}} sold successfully</ngb-alert>
+
+  <ngb-alert #buyClosingAlert *ngIf="isStockBought" type="success" (closed)="isStockBought = false">{{stock}} bought successfully</ngb-alert>
+
   <div id='companydetails-main' class='d-flex justify-content-between '>
     <div id='left-mid-component' class='w-50 d-flex justify-content-between'>
       <div id='company-description' class="d-flex flex-column ">
@@ -26,7 +31,7 @@
         <div id='header-name' class='h4' style='color: #6d747b'> {{result.profile.name}}</div>
         <div id='header-exchange' class='h5 text-uppercase' style='color: #757575; font-weight:600;'>
           {{result.profile.exchange}}</div>
-        <app-buysellbutton [ticker]='result.profile.ticker' [value]='quote.l' [source]="'search'">
+        <app-buysellbutton [ticker]='result.profile.ticker' [quote]='quote' [buyStockAlert]="buyStockAlert" [sellStockAlert]="sellStockAlert" [value]='quote.l' [source]="'search'">
         </app-buysellbutton>
 
       </div>

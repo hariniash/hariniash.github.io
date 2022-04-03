@@ -2,13 +2,12 @@
     background-color: #210eab;
     color: white;
     padding: 8px 10px;
+    z-index: 10;
 }
 
 #title{
   cursor: pointer;
 }
-
-
 
 
 .tab-style{

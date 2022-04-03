@@ -32,7 +32,7 @@
 
         <div class='d-flex align-items-center'>
             Quantity:
-            <input type='text' class='form-control w-50 ml-3' id='ticker' type='number'
+            <input type='text' class='form-control w-50 ml-3' id='ticker' type='number' min='0'
             (change)="changeInQuantity()"
             [formControl]='quantityValue'>
         </div>

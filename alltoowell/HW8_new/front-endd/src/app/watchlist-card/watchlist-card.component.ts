@@ -4,6 +4,8 @@ import { ApiCallsService } from './../api-calls.service';
 import { Router } from '@angular/router';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { pipe } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-watchlist-card',
@@ -35,9 +37,12 @@ export class WatchlistCardComponent implements OnInit {
     console.log('ticker inside card:', this.ticker)
     this.quoteDetails = getLocal(this.ticker)
 
-    this.apiCalls.quoteAPI(this.ticker).subscribe((data:any) =>{
-      this.quoteDetails = data[0]
-      updateLocal(this.ticker, this.quoteDetails)
+    this.apiCalls.quoteAPI(this.ticker).pipe(debounceTime(1000)).subscribe((data:any) =>{
+      if(data[0].name){
+        this.quoteDetails = data[0]
+        updateLocal(this.ticker, this.quoteDetails)
+      }
+
     },
     error => console.log('Error in Wtchlist: ',error.error.message))
 

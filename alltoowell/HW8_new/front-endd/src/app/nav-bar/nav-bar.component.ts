@@ -11,7 +11,7 @@ import {Router} from '@angular/router'
 })
 export class NavBarComponent implements OnInit {
   links = ['search', 'watchlist', 'portfolio'];
-
+  isCollapsed=true;
   etHome(){
     this.router.navigateByUrl('/search/home');
   }
@@ -32,4 +32,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  closeNavbar(){
+    document.getElementById("navbarSupportedContent")?.classList.remove("show");
+  }
 }

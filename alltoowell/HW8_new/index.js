@@ -1,17 +1,46 @@
 import {autoComplete, fetchCompanyDetails,quote, autoUpdate} from './api-calls.js'
 import express from 'express';
+import http from 'http';
+import path from 'path';
+import {fileURLToPath} from 'url'
+import fs from 'fs';
+const cors = require('cors');
+app.use(cors());
 
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+console.log(path.join(__dirname,'dist/front-endd'))
 // const apiCalls = require('./api-calls.js')
 const app = express();
-const port = 4000
+const PORT = process.env.PORT || 8080;
 
 
-app.get('/', (request, response) =>{
 
-    response.send('Hello World')
-});
-app.get('/search', async (request, response) =>{
-    response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+const root = path.join('dist', 'front-endd');
+
+
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  });
+
+app.use(express.static(path.join(__dirname,'dist/front-endd/')))
+app.get('/',(req, res) => res.redirect("/search/home"))
+app.get('/search',(req, res) => res.redirect("/search/home"))
+app.use('/search/home', express.static(path.join(__dirname,'dist/front-endd/')))
+app.use('/search/:ticker', express.static(path.join(__dirname,'dist/front-endd/')))
+app.use('/watchlist', express.static(path.join(__dirname,'dist/front-endd/')))
+app.use('/portfolio', express.static(path.join(__dirname,'dist/front-endd/')))
+
+
+
+app.get('/autocomplete', async (request, response) =>{
+    // response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
     let query = request.query.q
     // console.log(query)
     await autoComplete(query)
@@ -25,7 +54,7 @@ app.get('/search', async (request, response) =>{
     
 });
 app.get('/company_details', async (request, response) => {
-    response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+    // response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
 
     let ticker = request.query.symbol.toUpperCase()
     console.log(ticker)
@@ -44,7 +73,7 @@ app.get('/company_details', async (request, response) => {
 })
 
 app.get('/stock_quote', async (request, response) => {
-    response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+    // response.set('Access-Control-Allow-Origin', 'http://localhost:8080');
     let ticker = request.query.symbol.toUpperCase()
     // console.log(query)
     let result = quote(ticker)
@@ -60,7 +89,8 @@ app.get('/stock_quote', async (request, response) => {
     
 })
 
+app.use('/*', express.static(path.join(__dirname,'front-endd/dist/front-endd')))
 
-app.listen(port, () => {
-    // console.log('Hello WOrld2')
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}...`);
 });

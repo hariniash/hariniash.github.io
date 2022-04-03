@@ -1,8 +1,10 @@
+import { updateLocal } from 'src/localStorage';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { tap, catchError } from 'rxjs/operators';
 import { ApiCallsService } from './api-calls.service';
+import { getLocal } from '../localStorage';
 
 import { companyDetailsData } from './companyDetailsData';
 import { dataInterface } from './dataInterface';
@@ -99,6 +101,16 @@ export class StateService {
     ticker: '',
   };
 
+  portfolioAlertObj = {
+    money: 0,
+    isStockBought: false,
+    isStockSold: false,
+    stock: '',
+  };
+
+  public portfolioAlertSubject = new BehaviorSubject(this.portfolioAlertObj);
+  _portfolioAlert = this.portfolioAlertSubject.asObservable();
+
   public errorSubject = new BehaviorSubject(this.errorObj);
   _error = this.errorSubject.asObservable();
 
@@ -116,16 +128,16 @@ export class StateService {
 
   addCompany(ticker: '') {
     let newCompany: any = {};
-    console.log(
-      '************ add company ' +
-        JSON.stringify(ticker)
-    );
-
-      if (this._companyDetailsSubject.getValue().profile.ticker == '') {
-        this.apiCalls.getCompanyDetailsAPI(ticker).subscribe((data: any) => {
-          if(data.name == 'Error'){
-
-            console.log('error handling case 3 in 1')
+    console.log('************ add company ' + JSON.stringify(ticker));
+    let currentTicker = getLocal('currentTicker');
+    console.log('currentTicker', currentTicker)
+    console.log('newTicker', ticker)
+    if (!currentTicker || currentTicker != ticker) {
+      console.log('init')
+      this.apiCalls.getCompanyDetailsAPI(ticker).subscribe(
+        (data: any) => {
+          if (data.name == 'Error') {
+            console.log('error handling case 3');
             let e = {
               error: true,
               message: 'No data found. Please enter a valid ticker',
@@ -134,15 +146,10 @@ export class StateService {
             this.errorSubject.next(e);
           }
 
-          console.log('init service call');
-
-
-
-          this._companyDetailsSubject.next(data);
-          console.log(data.profile)
+          // console.log('add company service call');
+          // console.log(data.profile);
           if (!data.profile.ticker) {
-
-            console.log('set error right 1')
+            console.log('set error right 1');
             let e = {
               error: true,
               message: 'No data found. Please enter a valid ticker',
@@ -150,64 +157,71 @@ export class StateService {
             };
             this.errorSubject.next(e);
           }
-        },
-          (error: any) => {
-            let e = {
-              error: true,
-              message: error.error.message,
-              ticker: '',
-            };
-            this.errorSubject.next(e);
-          });
-      } else if (
-        this._companyDetailsSubject.getValue().profile.ticker != ticker
-      ) {
 
-        this.apiCalls.getCompanyDetailsAPI(ticker)
-        .subscribe((data: any) => {
+            this._companyDetailsSubject.next(data);
+            console.log('init ticker api call')
+            updateLocal('currentTicker', ticker)
 
-          if(data.name == 'Error'){
-
-            console.log('error handling case 3 in 1')
-            let e = {
-              error: true,
-              message: data.message,
-              ticker: ticker,
-            };
-            this.errorSubject.next(e);
-          }
-
-          this._companyDetailsSubject.next(data);
-          console.log(' data in case 2'+JSON.stringify(data.profile.ticker))
-          // debugger
-          if (!data.profile.ticker) {
-            console.log('set error right 2')
-            let e = {
-              error: true,
-              message: 'No data found. Please enter a valid ticker',
-              ticker: ticker,
-            };
-            this.errorSubject.next(e);
-          }
         },
         (error: any) => {
           let e = {
             error: true,
-            message: error.error.message,
+            message: 'API Limit Reached. Please reload',
             ticker: '',
           };
           this.errorSubject.next(e);
-        });
+        }
+      );
+    }
+    // if (!this._companyDetailsSubject.getValue().profile.ticker) {
 
+    // } else if (
+    //   this._companyDetailsSubject.getValue().profile.ticker != ticker
+    // ) {
 
-      }
+    //   this.apiCalls.getCompanyDetailsAPI(ticker)
+    //   .subscribe((data: any) => {
 
+    //     if(data.name == 'Error'){
+
+    //       console.log('error handling case 3 in 1')
+    //       let e = {
+    //         error: true,
+    //         message: data.message,
+    //         ticker: ticker,
+    //       };
+    //       this.errorSubject.next(e);
+    //     }
+
+    //     this._companyDetailsSubject.next(data);
+    //     console.log(' data in case 2'+JSON.stringify(data.profile.ticker))
+    //     // debugger
+    //     if (!data.profile.ticker) {
+    //       console.log('set error right 2')
+    //       let e = {
+    //         error: true,
+    //         message: 'No data found. Please enter a valid ticker',
+    //         ticker: ticker,
+    //       };
+    //       this.errorSubject.next(e);
+    //     }
+    //   },
+    //   (error: any) => {
+    //     let e = {
+    //       error: true,
+    //       message: "data not found",
+    //       ticker: '',
+    //     };
+    //     this.errorSubject.next(e);
+    //   });
+
+    // }
   }
 
   addQuote(ticker: '') {
     this.apiCalls.quoteAPI(ticker).subscribe((data: any) => {
       this.quoteSubject.next(data);
-      console.log('quote addded')
+      console.log('quote addded');
     });
     // return this.quoteSubject.asObservable();
   }
@@ -216,14 +230,25 @@ export class StateService {
     return this.apiCalls.quoteAPI(ticker).pipe(
       tap((data: any) => {
         this.quoteSubject.next(data);
-        console.log('done refresh')
+        console.log('done refresh');
       })
     );
   }
 
+  portfolioReset() {
+    let curBalance = this.portfolioAlertSubject.getValue().money;
+    let temp = {
+      money: curBalance,
+      isStockBought: false,
+      isStockSold: false,
+      stock: '',
+    };
+    console.log('is it resetting: ', temp);
+    this.portfolioAlertSubject.next(temp);
+  }
   resetData() {
     this._companyDetailsSubject.next(this.companyObject);
-    console.log("resetting", this.errorObj);
+    console.log('resetting', this.errorObj);
     this.errorSubject.next(this.errorObj);
   }
 
