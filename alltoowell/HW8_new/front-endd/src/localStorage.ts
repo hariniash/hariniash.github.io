@@ -10,3 +10,7 @@ export function getLocal(key:string):any{
     let cState=JSON.parse(value);
     return cState
 }
+
+export function remove(key:string):any{
+  localStorage.removeItem(key)
+}

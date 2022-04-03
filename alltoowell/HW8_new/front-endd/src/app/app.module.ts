@@ -24,7 +24,9 @@ import { ChartsComponent } from './charts/charts.component';
 import { InsightsComponent } from './insights/insights.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatCardModule } from '@angular/material/card';
-import {HighchartsChartModule} from 'highcharts-angular'
+import {HighchartsChartModule} from 'highcharts-angular';
+import { WatchlistCardComponent } from './watchlist-card/watchlist-card.component';
+import { PortfolioCardComponent } from './portfolio-card/portfolio-card.component'
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import {HighchartsChartModule} from 'highcharts-angular'
     SummaryComponent,
     NewsComponent,
     ChartsComponent,
-    InsightsComponent
+    InsightsComponent,
+    WatchlistCardComponent,
+    PortfolioCardComponent
   ],
   imports: [
     BrowserModule,

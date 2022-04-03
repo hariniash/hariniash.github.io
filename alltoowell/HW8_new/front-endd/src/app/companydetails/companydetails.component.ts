@@ -1,6 +1,6 @@
 import { Component, SimpleChange, OnInit, Input, ViewChild } from '@angular/core';
 import { tick } from '@angular/core/testing';
-import { getLocal, updateLocal } from 'src/localStorage';
+import { getLocal, updateLocal, remove } from 'src/localStorage';
 import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
@@ -48,17 +48,22 @@ export class CompanydetailsComponent implements OnInit {
     if (Wlist.includes(tickerChanged)) {
       Wlist = Wlist.filter((ticker) => ticker != tickerChanged);
       this.alertType = 'danger';
+      // updateLocal(tickerChanged, this.quote)
+      remove(tickerChanged)
+
     } else {
       Wlist.push(tickerChanged);
+      updateLocal(tickerChanged, this.quote)
       console.log(Wlist);
       this.companyAdded = this.result.profile.ticker;
       this.alertType = 'success';
     }
-    setTimeout(()=>this.selfClosingAlert?.close(), 5000)
+    setTimeout(()=>this.selfClosingAlert?.close(), 5000);
 
 
 
     updateLocal('watchlistCompanies', Wlist);
+
   }
 
 

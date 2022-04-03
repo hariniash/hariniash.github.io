@@ -1,5 +1,5 @@
 <div class='container'>
-  <div class='h1'>
+  <div class='h1 mt-3'>
     My Watchlist
   </div>
   <div class='body'>
@@ -7,46 +7,10 @@
       Currently you don't have any stock in your watchlist
     </ngb-alert>
 
-    <div id='watchlist-card' class='d-flex mt-5' *ngFor="let company of watchlistData">
+    <div id='watchlist-card' *ngFor='let company of curWatchlist' class='d-flex mt-5'>
 
+      <app-watchlist-card class='w-100 '[ticker]='company' (onRemove)="delete($event)"></app-watchlist-card>
 
-      <mat-card class='w-100 d-flex align-items-center justify-content-between mat-elevation-z0 outline mt-2'
-        (click)='searchTicker(company.ticker)'>
-
-        <mat-card-content id='news-title' class='d-flex flex-column  ml-2'>
-          <div class='h2'>
-            {{company.ticker}}
-          </div>
-          <div class='h5'>
-            {{company.quote[0].name}}
-          </div>
-        </mat-card-content>
-
-        <mat-card-content id='quote-details' class='d-flex flex-column ml-1 align-items-end font-weight-bold'>
-          <button type='button' class='btn-close' aria-label='Close' (click)='delete(company.ticker)'>
-            <fa-icon [icon]='faXmark' [styles] = "{width: '1vw', height: '1vw', color: '#7d7d7d'}"></fa-icon>
-          </button>
-
-          <div class='d-flex flex-column  align-items-end'
-            [ngStyle]="{'color': company.quote[0].dp < 0 ? '#ea3323': '#367b21'}">
-            <div class='h2'>{{company.quote[0].l}}</div>
-            <div class='h4'>
-              <div id='stock-values'>
-                <fa-icon *ngIf="company.quote[0].dp > 0" [icon]='faCaretUp' [styles]="{color: '#367b21'}"></fa-icon>
-                <fa-icon *ngIf="company.quote[0].dp < 0" [icon]='faCaretDown' [styles]="{color: '#ea3323'}"></fa-icon>
-                {{company.quote[0].d}}
-                ({{company.quote[0].dp}}%)
-
-              </div>
-            </div>
-          </div>
-
-
-
-        </mat-card-content>
-
-
-      </mat-card>
     </div>
 
   </div>
